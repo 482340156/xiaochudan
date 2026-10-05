@@ -1,0 +1,78 @@
+<block wx:if="{{!notFound}}">
+  <view class="page">
+    <view class="hero" style="background: linear-gradient(150deg, {{dish.color2}}, {{dish.color}});">
+      <image wx:if="{{dish.image}}" class="hero-img" src="{{dish.image}}" mode="aspectFill" />
+      <text wx:else class="hero-emoji">{{dish.emoji}}</text>
+      <view class="hero-badges">
+        <view class="badge badge-solid" wx:if="{{dish.recommend}}">招牌</view>
+        <view class="badge" wx:if="{{dish.spicyText}}">{{dish.spicyText}}</view>
+      </view>
+    </view>
+
+    <view class="body">
+      <view class="card head-card">
+        <view class="head-top">
+          <view class="dish-name">{{dish.name}}</view>
+          <view class="fav-btn {{fav ? 'fav-on' : ''}}" bindtap="toggleFav">{{fav ? '♥' : '♡'}}</view>
+        </view>
+
+        <view class="tag-row">
+          <text class="tag" wx:for="{{dish.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+
+        <view class="price-row">
+          <text class="price big"><text class="price-sym">¥</text>{{dish.price}}<text class="unit">/{{dish.unit}}</text></text>
+          <view class="meta">
+            <view class="meta-item">⏱ {{dish.time}}</view>
+            <view class="meta-item">🔥 {{dish.level}}</view>
+          </view>
+        </view>
+
+        <view class="desc">{{dish.desc}}</view>
+      </view>
+
+      <view class="card">
+        <view class="card-title"><text class="ct-icon">🧺</text>食材清单</view>
+        <view class="ing-item" wx:for="{{dish.ingredients}}" wx:key="*this">
+          <view class="ing-dot"></view>
+          <text class="ing-text">{{item}}</text>
+        </view>
+      </view>
+
+      <view class="card">
+        <view class="card-title"><text class="ct-icon">🍳</text>做法</view>
+        <view class="step-item" wx:for="{{dish.steps}}" wx:key="*this">
+          <view class="step-num">{{index + 1}}</view>
+          <text class="step-text">{{item}}</text>
+        </view>
+      </view>
+
+      <view class="tips" wx:if="{{dish.tips}}">
+        <text class="tips-icon">💡</text>
+        <text class="tips-text">{{dish.tips}}</text>
+      </view>
+
+      <view class="ghost-btn copy-btn" bindtap="copyRecipe">复制食材和做法</view>
+    </view>
+  </view>
+
+  <view class="bottom-hold"></view>
+
+  <view class="bar">
+    <view class="bar-qty">
+      <view class="step-btn {{qty === 0 ? 'step-off' : ''}}" bindtap="minusOne">−</view>
+      <text class="bar-qty-num">{{qty}}</text>
+      <view class="step-btn step-plus" bindtap="addOne">＋</view>
+    </view>
+    <view class="bar-main {{qty > 0 ? 'bar-main-on' : ''}}" bindtap="mainAction">
+      <text wx:if="{{qty > 0}}">去点单 · 共 {{cartCount}} 份 ¥{{cartTotal}}</text>
+      <text wx:else>加入点单 · ¥{{dish.price}}</text>
+    </view>
+  </view>
+</block>
+
+<view class="notfound" wx:if="{{notFound}}">
+  <text class="empty-emoji">🤔</text>
+  <view class="empty-text">这道菜不见了</view>
+  <view class="ghost-btn back-btn" bindtap="goHome">回到菜单</view>
+</view>

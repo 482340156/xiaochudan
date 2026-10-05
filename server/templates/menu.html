@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}{{ shop.name }} · 菜单{% endblock %}
+{% block body_class %}menu-page{% endblock %}
+
+{% block content %}
+{% set dish_count = dishes|length %}
+{% set rec_count = recommends|length %}
+
+<header class="hero{% if cover %} hero-cover{% endif %}">
+  {% if cover %}
+  <div class="hero-bg" style="background-image:url('{{ cover }}')"></div>
+  <div class="hero-veil"></div>
+  {% endif %}
+
+  <div class="hero-inner">
+    <div class="hero-top">
+      {% if not cover %}
+      <div class="avatar">
+        {% if avatar %}<img src="{{ avatar }}" alt="{{ shop.name }}">{% else %}{{ shop.avatar }}{% endif %}
+      </div>
+      {% endif %}
+      <div class="brand">
+        <h1>{{ shop.name }}</h1>
+        <p>{{ shop.slogan }}</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div><strong>{{ dish_count }}</strong><span>道菜</span></div>
+      <div><strong>{{ rec_count }}</strong><span>招牌</span></div>
+    </div>
+
+    {% if shop.notice %}
+    <div class="notice">📌 {{ shop.notice }}</div>
+    {% endif %}
+  </div>
+</header>
+
+<div class="lower{% if lower %} lower-photo{% endif %}">
+  {% if lower %}
+  <div class="lower-bg" style="background-image:url('{{ lower }}')"></div>
+  <div class="lower-veil"></div>
+  {% endif %}
+
+<main class="wrap">
+  <div class="search">
+    <span>🔍</span>
+    <input id="searchInput" type="search" placeholder="搜索菜名或食材" autocomplete="off">
+  </div>
+
+  <nav class="cats" id="cats">
+    <button class="cat cat-on" type="button" data-cat="all">全部</button>
+    {% for c in categories %}
+    <button class="cat" type="button" data-cat="{{ c.id }}">{{ c.name }}</button>
+    {% endfor %}
+  </nav>
+
+  {% if recommends %}
+  <section class="section" id="recSection">
+    <div class="sec-head"><h2>招牌推荐</h2><span>最拿手的几道</span></div>
+    <div class="rec-scroll">
+      {% for d in recommends %}
+      <article class="rec-card" data-id="{{ d.id }}">
+        <a class="rec-thumb" href="{{ url_for('dish_page', dish_id=d.id) }}"
+           style="background:linear-gradient(140deg,{{ d.color2 }},{{ d.color }})">
+          {% if d.image %}
+          <img class="thumb-img" src="{{ d.image }}" alt="{{ d.name }}">
+          {% else %}
+          <span class="thumb-emoji">{{ d.emoji }}</span>
+          {% endif %}
+          <span class="rec-badge">招牌</span>
+        </a>
+        <h4 class="rec-name">{{ d.name }}</h4>
+        <p class="rec-desc">{{ d.desc }}</p>
+        <div class="rec-foot">
+          <span class="price"><i>¥</i>{{ d.price }}</span>
+          <button class="plus round" type="button" data-add="{{ d.id }}" aria-label="加入点单">＋</button>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="section">
+    <div class="sec-head">
+      <h2 id="listTitle">全部菜品</h2>
+      <span id="listCount">共 {{ dish_count }} 道</span>
+    </div>
+
+    <div class="list" id="list">
+      {% for d in dishes %}
+      <article class="card" data-id="{{ d.id }}" data-cat="{{ d.category }}"
+               data-search="{{ d.name }} {{ d.desc }} {{ d.ingredients|join(' ') }}">
+        <a class="thumb" href="{{ url_for('dish_page', dish_id=d.id) }}"
+           style="background:linear-gradient(140deg,{{ d.color2 }},{{ d.color }})">
+          {% if d.image %}
+          <img class="thumb-img" src="{{ d.image }}" alt="{{ d.name }}">
+          {% else %}
+          <span class="thumb-emoji">{{ d.emoji }}</span>
+          {% endif %}
+          {% if d.spicy %}
+          <span class="spicy">{{ '🌶️' * d.spicy }}</span>
+          {% endif %}
+        </a>
+
+        <div class="card-main">
+          <h3 class="card-name">
+            <a href="{{ url_for('dish_page', dish_id=d.id) }}">{{ d.name }}</a>
+            {% if d.recommend %}<span class="card-flag">招牌</span>{% endif %}
+          </h3>
+          <p class="card-desc">{{ d.desc }}</p>
+          <div class="tags">
+            {% for t in d.tags %}<span class="tag">{{ t }}</span>{% endfor %}
+          </div>
+          <div class="card-foot">
+            <span class="price"><i>¥</i>{{ d.price }}<span class="unit">/{{ d.unit }}</span></span>
+            <div class="stepper" data-stepper="{{ d.id }}">
+              <button class="minus" type="button" data-minus="{{ d.id }}" hidden aria-label="减少">−</button>
+              <span class="qty" hidden>0</span>
+              <button class="plus" type="button" data-add="{{ d.id }}" aria-label="加入点单">＋</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="empty" id="empty" {% if dishes %}hidden{% endif %}>
+      <div class="empty-emoji">🍽️</div>
+      {% if dishes %}
+      <p>没找到这道菜</p>
+      <small>换个关键词，或者直接问问主理人</small>
+      {% else %}
+      <p>菜单还在准备中</p>
+      <small>店主正在一道道把菜写上来，晚点再来看看</small>
+      {% endif %}
+    </div>
+  </section>
+
+  <div class="bottom-space"></div>
+</main>
+</div>
+
+<div class="bar" id="bar" hidden>
+  <div class="bar-left">
+    <span class="bar-count" id="barCount">已选 0 份</span>
+    <strong class="bar-total" id="barTotal">¥0</strong>
+  </div>
+  <button class="primary" id="openSheet" type="button">提交点单</button>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-mask" data-close="1"></div>
+  <div class="sheet-panel">
+    <div class="sheet-head">
+      <h3>确认点单</h3>
+      <button class="sheet-close" type="button" data-close="1">✕</button>
+    </div>
+
+    <div class="sheet-list" id="sheetList"></div>
+    <div class="sheet-total"><span>合计</span><strong id="sheetTotal">¥0</strong></div>
+
+    <label class="field">
+      <span>怎么称呼你</span>
+      <input id="fCustomer" maxlength="20" placeholder="比如：小王">
+    </label>
+    <label class="field">
+      <span>联系方式（选填）</span>
+      <input id="fContact" maxlength="40" placeholder="微信号或手机号">
+    </label>
+    <label class="field">
+      <span>备注（选填）</span>
+      <textarea id="fNote" maxlength="120" placeholder="少辣 / 几点要 / 其他要求"></textarea>
+    </label>
+
+    <button class="primary block" id="confirmBtn" type="button">提交给主理人</button>
+    <p class="sheet-hint">提交后主理人在后台就能看到。也可以复制清单，直接发微信给 {{ shop.contact }}。</p>
+  </div>
+</div>
+
+<footer class="foot">
+  {% if shop.intro %}<p>{{ shop.intro }}</p>{% endif %}
+  <p class="foot-contact">联系主理人：{{ shop.contact }}</p>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script>window.__SHOP__={{ shop_json|safe }};window.__DISHES__={{ dishes_json|safe }};</script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}

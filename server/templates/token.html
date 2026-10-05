@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}店主后台 · {{ shop.name }}{% endblock %}
+{% block body_class %}console-page{% endblock %}
+
+{% block content %}
+<div class="console-wrap narrow">
+  <div class="console-card">
+    <h1>店主后台</h1>
+    <p class="console-sub">输入口令查看订单。口令在 <code>server/menu.py</code> 里的 <code>admin_token</code>，记得改掉默认值。</p>
+
+    {% if has_error %}
+    <div class="alert">口令不对，再试一次。</div>
+    {% endif %}
+
+    <form method="get" action="{{ url_for('shop') }}" class="token-form">
+      <input type="password" name="token" placeholder="输入后台口令" autocomplete="current-password" autofocus>
+      <button class="primary block" type="submit">进入后台</button>
+    </form>
+
+    <a class="console-link" href="{{ url_for('menu_page') }}">← 去看看菜单</a>
+  </div>
+</div>
+{% endblock %}

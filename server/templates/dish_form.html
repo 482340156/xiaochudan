@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}加一道菜 · {{ shop.name }}{% endblock %}
+{% block body_class %}console-page{% endblock %}
+
+{% block content %}
+<div class="console-wrap">
+  <header class="console-head">
+    <div>
+      <h1>加一道菜</h1>
+      <p class="console-sub">填完点最下面的保存，菜单里马上就有，不用改代码。</p>
+    </div>
+    <a class="console-link" href="{{ url_for('shop', token=token) }}">← 回订单后台</a>
+  </header>
+
+  {% if error %}
+  <div class="flash bad">{{ error }}</div>
+  {% endif %}
+
+  <form class="dish-form" method="post"
+        action="{{ url_for('shop_dish_create') }}" enctype="multipart/form-data">
+    <input type="hidden" name="token" value="{{ token }}">
+
+    <section class="console-card">
+      <h2 class="form-sec">基本信息</h2>
+
+      <label class="field">
+        <span>菜名</span>
+        <input name="name" value="{{ values.get('name') or '' }}" maxlength="30"
+               placeholder="比如：青椒土豆丝" required>
+      </label>
+
+      <div class="field-row">
+        <label class="field">
+          <span>分类</span>
+          <select name="category">
+            {% for c in categories %}
+            <option value="{{ c.id }}"
+              {% if values.get('category') == c.id %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label class="field">
+          <span>价格（元）</span>
+          <input name="price" type="number" step="0.5" min="0"
+                 value="{{ values.get('price') or '' }}" placeholder="18">
+        </label>
+
+        <label class="field">
+          <span>单位</span>
+          <input name="unit" value="{{ values.get('unit') or '份' }}" maxlength="4">
+        </label>
+      </div>
+
+      <div class="field-row">
+        <label class="field">
+          <span>图标</span>
+          <input name="emoji" value="{{ values.get('emoji') or '🍽️' }}" maxlength="4"
+                 placeholder="🍜">
+          <small>没有照片时显示这个</small>
+        </label>
+
+        <label class="field">
+          <span>辣度</span>
+          <select name="spicy">
+            <option value="0">不辣</option>
+            <option value="1">🌶️ 微辣</option>
+            <option value="2">🌶️🌶️ 中辣</option>
+            <option value="3">🌶️🌶️🌶️ 很辣</option>
+          </select>
+        </label>
+
+        <div class="field">
+          <span>推荐位</span>
+          <label class="check">
+            <input type="checkbox" name="recommend"
+                   {% if values.get('recommend') %}checked{% endif %}>
+            放到首页「招牌推荐」
+          </label>
+        </div>
+      </div>
+
+      <label class="field">
+        <span>照片</span>
+        <input type="file" name="photo" accept="image/*">
+        <small>
+          从手机或电脑里选一张，不用自己压缩 —— 保存时会自动缩到 1200 像素、转成 jpg，
+          一般只有 100KB 左右。不传照片就显示上面的图标。
+        </small>
+        <small>
+          提醒：微信小程序整个包上限 2MB，扣掉背景图后大约还能放 15 张菜品照片。
+          菜多的话，可以一部分用照片、一部分只用图标。
+        </small>
+      </label>
+
+      <label class="field">
+        <span>或者直接填图片网址</span>
+        <input name="image" value="{{ values.get('image') or '' }}"
+               placeholder="留空即可">
+        <small>从手机上传过就不用填这里</small>
+      </label>
+
+      <label class="field">
+        <span>一句话介绍</span>
+        <textarea name="desc" maxlength="120"
+                  placeholder="大火快炒，脆得能听见响。">{{ values.get('desc') or '' }}</textarea>
+      </label>
+
+      <div class="field-row">
+        <label class="field">
+          <span>标签</span>
+          <input name="tags" value="{{ values.get('tags') or '' }}"
+                 placeholder="素菜、下饭、快手">
+          <small>用顿号或逗号分开</small>
+        </label>
+
+        <label class="field">
+          <span>大概要多久</span>
+          <input name="time" value="{{ values.get('time') or '' }}" placeholder="15 分钟">
+        </label>
+
+        <label class="field">
+          <span>难度</span>
+          <input name="level" value="{{ values.get('level') or '' }}" placeholder="新手友好">
+        </label>
+      </div>
+    </section>
+
+    <section class="console-card">
+      <h2 class="form-sec">食材和做法（选填，但填了朋友会觉得很贴心）</h2>
+
+      <label class="field">
+        <span>食材</span>
+        <textarea name="ingredients" rows="6"
+                  placeholder="土豆 2 个&#10;青椒 2 个&#10;盐 适量">{{ values.get('ingredients') or '' }}</textarea>
+        <small>一行写一样</small>
+      </label>
+
+      <label class="field">
+        <span>做法</span>
+        <textarea name="steps" rows="6"
+                  placeholder="土豆切丝泡水&#10;大火快炒两分钟&#10;加盐出锅">{{ values.get('steps') or '' }}</textarea>
+        <small>一行写一步，顺序就是第 1、2、3 步</small>
+      </label>
+
+      <label class="field">
+        <span>小贴士</span>
+        <textarea name="tips" maxlength="120"
+                  placeholder="土豆丝要泡掉淀粉才脆。">{{ values.get('tips') or '' }}</textarea>
+      </label>
+    </section>
+
+    <div class="form-actions">
+      <button class="primary block" type="submit">保存，加到菜单里</button>
+      <a class="console-link" href="{{ url_for('shop', token=token) }}">算了，先不加</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

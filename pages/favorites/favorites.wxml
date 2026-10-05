@@ -1,0 +1,32 @@
+<view class="page">
+  <block wx:if="{{items.length > 0}}">
+    <view class="head">收藏了 {{items.length}} 道菜</view>
+
+    <view class="list">
+      <view class="card" wx:for="{{items}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+        <view class="thumb" style="background: linear-gradient(140deg, {{item.color2}}, {{item.color}});">
+          <text class="thumb-emoji">{{item.emoji}}</text>
+        </view>
+
+        <view class="card-main">
+          <view class="card-name">{{item.name}}</view>
+          <view class="card-desc">{{item.desc}}</view>
+          <view class="card-foot">
+            <text class="price"><text class="price-sym">¥</text>{{item.price}}<text class="unit">/{{item.unit}}</text></text>
+            <view class="btns">
+              <view class="mini ghost" catchtap="remove" data-id="{{item.id}}">取消收藏</view>
+              <view class="mini" catchtap="addOne" data-id="{{item.id}}">{{item.qty > 0 ? '再来一份' : '加入点单'}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty" wx:else>
+    <text class="empty-emoji">♡</text>
+    <view class="empty-text">还没有收藏</view>
+    <view class="empty-tip">在菜品详情页点右上角的爱心，就会出现在这里</view>
+    <view class="primary-btn empty-btn" bindtap="goMenu">去菜单看看</view>
+  </view>
+</view>

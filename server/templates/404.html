@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}没找到 · {{ shop.name }}{% endblock %}
+{% block body_class %}console-page{% endblock %}
+
+{% block content %}
+<div class="console-wrap narrow">
+  <div class="console-card empty-orders">
+    <div class="empty-emoji">🍽️</div>
+    <h1>这道菜不见了</h1>
+    <p class="console-sub">地址可能输错了，或者这道菜已经下架。</p>
+    <a class="console-link" href="{{ url_for('menu_page') }}">← 回到菜单</a>
+  </div>
+</div>
+{% endblock %}

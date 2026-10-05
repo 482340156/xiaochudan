@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}{{ dish.name }} · {{ shop.name }}{% endblock %}
+{% block body_class %}dish-page{% endblock %}
+
+{% block content %}
+<div class="dish-hero" style="background:linear-gradient(150deg,{{ dish.color2 }},{{ dish.color }})">
+  {% if dish.image %}
+  <img class="hero-img" src="{{ dish.image }}" alt="{{ dish.name }}">
+  {% else %}
+  <span class="hero-emoji">{{ dish.emoji }}</span>
+  {% endif %}
+  <div class="hero-badges">
+    {% if dish.recommend %}<span class="badge badge-solid">招牌</span>{% endif %}
+    {% if dish.spicy %}<span class="badge">{{ '🌶️' * dish.spicy }}</span>{% endif %}
+  </div>
+  <a class="hero-back" href="{{ url_for('menu_page') }}">← 回菜单</a>
+</div>
+
+<div class="dish-body">
+  <section class="card">
+    <h1 class="dish-name">{{ dish.name }}</h1>
+    <div class="tags">
+      {% for t in dish.tags %}<span class="tag">{{ t }}</span>{% endfor %}
+    </div>
+    <div class="price-row">
+      <span class="price big"><i>¥</i>{{ dish.price }}<span class="unit">/{{ dish.unit }}</span></span>
+      <div class="meta">
+        <span>⏱ {{ dish.time }}</span>
+        <span>🔥 {{ dish.level }}</span>
+      </div>
+    </div>
+    <p class="desc">{{ dish.desc }}</p>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">🧺 食材清单</h2>
+    <ul class="ing-list">
+      {% for ing in dish.ingredients %}
+      <li><span class="ing-dot"></span>{{ ing }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2 class="card-title">🍳 做法</h2>
+    <ol class="step-list">
+      {% for step in dish.steps %}
+      <li>
+        <span class="step-num">{{ loop.index }}</span>
+        <span class="step-text">{{ step }}</span>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  {% if dish.tips %}
+  <div class="tips"><span>💡</span><p>{{ dish.tips }}</p></div>
+  {% endif %}
+
+  <div class="dish-actions">
+    <button class="ghost-btn" id="copyRecipe" type="button">复制食材和做法</button>
+  </div>
+
+  <textarea id="recipeSource" class="sr-only" readonly>{{ recipe_text }}</textarea>
+</div>
+
+<div class="bottom-space"></div>
+
+<div class="bar">
+  <div class="bar-left">
+    <span class="bar-count" id="barCount">还没选这道菜</span>
+    <strong class="bar-total" id="barTotal">¥0</strong>
+  </div>
+  <button class="primary" id="dishAdd" type="button" data-dish="{{ dish.id }}">
+    加入点单 · ¥{{ dish.price }}
+  </button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.__SHOP__ = {{ shop_json|safe }};
+  window.__DISHES__ = {{ dishes_json|safe }};
+  window.__CURRENT_DISH__ = {{ dish.id }};
+</script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}

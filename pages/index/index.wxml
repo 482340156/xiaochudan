@@ -1,0 +1,161 @@
+<view class="page">
+
+  <!-- 顶部信息 -->
+  <view class="hero {{info.cover ? 'hero-cover' : ''}}" style="padding-top: {{navPad}}px">
+    <image wx:if="{{info.cover}}" class="hero-bg" src="{{info.cover}}" mode="aspectFill" />
+    <view wx:if="{{info.cover}}" class="hero-veil"></view>
+    <view wx:if="{{!info.cover}}" class="blob blob-a"></view>
+    <view wx:if="{{!info.cover}}" class="blob blob-b"></view>
+
+    <view class="hero-inner">
+      <view class="brand">
+        <view class="avatar" wx:if="{{!info.cover}}">
+          <image wx:if="{{info.avatarImg}}" class="avatar-img" src="{{info.avatarImg}}" mode="aspectFill" />
+          <text wx:else>{{info.avatarEmoji}}</text>
+        </view>
+        <view class="brand-main">
+          <view class="shop-name">{{info.shopName}}</view>
+          <view class="slogan">{{info.slogan}}</view>
+        </view>
+        <button class="share-btn" open-type="share" hover-class="none">分享</button>
+      </view>
+
+      <view class="stats">
+        <view class="stat">
+          <view class="stat-num">{{total}}</view>
+          <view class="stat-label">道菜</view>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat">
+          <view class="stat-num">{{recommendCount}}</view>
+          <view class="stat-label">招牌</view>
+        </view>
+      </view>
+
+      <view class="notice" wx:if="{{info.notice}}">
+        <text class="notice-icon">📌</text>
+        <text class="notice-text">{{info.notice}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="lower {{info.lower ? 'lower-photo' : ''}}">
+    <image wx:if="{{info.lower}}" class="lower-bg" src="{{info.lower}}" mode="aspectFill" />
+    <view wx:if="{{info.lower}}" class="lower-veil"></view>
+
+  <!-- 搜索 + 分类 -->
+  <view class="toolbar">
+    <view class="search">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        value="{{keyword}}"
+        placeholder="搜索菜名或食材"
+        placeholder-class="ph"
+        confirm-type="search"
+        bindinput="onSearch"
+      />
+      <view class="search-clear" wx:if="{{keyword}}" catchtap="clearSearch">✕</view>
+    </view>
+
+    <scroll-view class="cats" scroll-x show-scrollbar="{{false}}">
+      <view
+        class="cat {{activeCat === item.id ? 'cat-on' : ''}}"
+        wx:for="{{cats}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCat"
+      >{{item.name}}</view>
+    </scroll-view>
+  </view>
+
+  <!-- 招牌推荐 -->
+  <block wx:if="{{showRecommend && recommends.length > 0}}">
+    <view class="sec-head">
+      <view class="sec-title">招牌推荐</view>
+      <view class="sec-sub">最拿手的几道</view>
+    </view>
+
+    <scroll-view class="rec-scroll" scroll-x show-scrollbar="{{false}}">
+      <view
+        class="rec-card"
+        wx:for="{{recommends}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="goDetail"
+      >
+        <view class="rec-thumb" style="background: linear-gradient(140deg, {{item.color2}}, {{item.color}});">
+          <image wx:if="{{item.image}}" class="thumb-img" src="{{item.image}}" mode="aspectFill" />
+          <text wx:else class="thumb-emoji">{{item.emoji}}</text>
+          <view class="rec-badge">招牌</view>
+        </view>
+        <view class="rec-name">{{item.name}}</view>
+        <view class="rec-desc">{{item.desc}}</view>
+        <view class="rec-foot">
+          <text class="price"><text class="price-sym">¥</text>{{item.price}}</text>
+          <view class="add-btn" catchtap="addOne" data-id="{{item.id}}">＋</view>
+        </view>
+      </view>
+    </scroll-view>
+  </block>
+
+  <!-- 菜品列表 -->
+  <view class="sec-head">
+    <view class="sec-title">{{activeCatName}}</view>
+    <view class="sec-sub">共 {{list.length}} 道</view>
+  </view>
+
+  <view class="list">
+    <view
+      class="card"
+      wx:for="{{list}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="goDetail"
+      hover-class="card-hover"
+      hover-stay-time="80"
+    >
+      <view class="thumb" style="background: linear-gradient(140deg, {{item.color2}}, {{item.color}});">
+        <image wx:if="{{item.image}}" class="thumb-img" src="{{item.image}}" mode="aspectFill" />
+        <text wx:else class="thumb-emoji">{{item.emoji}}</text>
+        <text class="spicy" wx:if="{{item.spicyText}}">{{item.spicyText}}</text>
+      </view>
+
+      <view class="card-main">
+        <view class="card-title-row">
+          <text class="card-name">{{item.name}}</text>
+          <view class="card-qty" wx:if="{{item.qty > 0}}">已选 {{item.qty}}</view>
+        </view>
+        <view class="card-desc">{{item.desc}}</view>
+        <view class="tag-row">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+        </view>
+        <view class="card-foot">
+          <text class="price"><text class="price-sym">¥</text>{{item.price}}<text class="unit">/{{item.unit}}</text></text>
+          <view class="add-btn" catchtap="addOne" data-id="{{item.id}}">＋</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{list.length === 0}}">
+    <text class="empty-emoji">🍽️</text>
+    <view class="empty-text">{{total === 0 ? '菜单还在准备中' : '没找到这道菜'}}</view>
+    <view class="empty-tip">{{total === 0 ? '主理人正在一道道把菜写上来，晚点再来看看' : '换个关键词，或者问问主理人能不能做'}}</view>
+  </view>
+
+  <view class="{{cartCount > 0 ? 'bottom-space-lg' : 'bottom-space'}}"></view>
+  </view>
+</view>
+
+<!-- 悬浮的点单条 -->
+<view class="float-cart" wx:if="{{cartCount > 0}}" bindtap="goCart">
+  <view class="fc-left">
+    <view class="fc-icon">🧺</view>
+    <view>
+      <view class="fc-count">已选 {{cartCount}} 份</view>
+      <view class="fc-total">¥{{cartTotal}}</view>
+    </view>
+  </view>
+  <view class="fc-btn">去点单</view>
+</view>

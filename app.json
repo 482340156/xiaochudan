@@ -1,0 +1,39 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/cart/cart",
+    "pages/mine/mine",
+    "pages/detail/detail",
+    "pages/favorites/favorites",
+    "pages/about/about"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#F7F8FC",
+    "navigationBarTitleText": "小厨单",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F7F8FC"
+  },
+  "tabBar": {
+    "color": "#98A0B8",
+    "selectedColor": "#6C8FF0",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "菜单"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "text": "点单"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

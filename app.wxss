@@ -1,0 +1,133 @@
+page {
+  background: #F7F8FC;
+  color: #383D52;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+view, text, input, textarea, button {
+  box-sizing: border-box;
+}
+
+/* ---------- 通用 ---------- */
+.tag {
+  display: inline-block;
+  padding: 4rpx 14rpx;
+  margin-right: 10rpx;
+  font-size: 20rpx;
+  line-height: 1.5;
+  color: #5B7BE0;
+  background: #EEF2FF;
+  border-radius: 100rpx;
+}
+
+.price {
+  color: #6C8FF0;
+  font-size: 34rpx;
+  font-weight: 700;
+  font-family: "DIN Alternate", -apple-system, sans-serif;
+}
+
+.price-sym {
+  font-size: 22rpx;
+  font-weight: 600;
+  margin-right: 2rpx;
+}
+
+.unit {
+  font-size: 20rpx;
+  color: #98A0B8;
+  font-weight: 400;
+  margin-left: 2rpx;
+}
+
+.add-btn {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: linear-gradient(140deg, #8FAEFF, #6C8FF0);
+  color: #FFFFFF;
+  font-size: 34rpx;
+  line-height: 50rpx;
+  text-align: center;
+  box-shadow: 0 6rpx 14rpx rgba(108, 143, 240, 0.26);
+}
+
+.add-btn:active {
+  transform: scale(0.9);
+}
+
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  padding: 36rpx 32rpx 20rpx;
+}
+
+.sec-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #383D52;
+  margin-right: 14rpx;
+}
+
+.sec-sub {
+  font-size: 22rpx;
+  color: #A2A9BF;
+}
+
+.empty {
+  padding: 120rpx 40rpx;
+  text-align: center;
+}
+
+.empty-emoji {
+  font-size: 80rpx;
+}
+
+.empty-text {
+  margin-top: 24rpx;
+  font-size: 30rpx;
+  color: #6B7189;
+}
+
+.empty-tip {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #A2A9BF;
+}
+
+/* ---------- 底部主按钮 ---------- */
+.primary-btn {
+  height: 92rpx;
+  line-height: 92rpx;
+  text-align: center;
+  border-radius: 100rpx;
+  background: linear-gradient(140deg, #8FAEFF, #6C8FF0);
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 600;
+  box-shadow: 0 10rpx 22rpx rgba(108, 143, 240, 0.22);
+}
+
+.primary-btn:active {
+  opacity: 0.9;
+}
+
+.ghost-btn {
+  height: 92rpx;
+  line-height: 92rpx;
+  text-align: center;
+  border-radius: 100rpx;
+  background: #FFFFFF;
+  color: #4B5169;
+  font-size: 30rpx;
+  border: 2rpx solid #E8EBF4;
+}
+
+.ghost-btn:active {
+  background: #F5F7FD;
+}
+
+.safe-bottom {
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}

@@ -1,0 +1,46 @@
+<view class="page">
+  <view class="hero {{info.cover ? 'hero-cover' : ''}}">
+    <image wx:if="{{info.cover}}" class="hero-bg" src="{{info.cover}}" mode="aspectFill" />
+    <view wx:if="{{info.cover}}" class="hero-veil"></view>
+
+    <view class="hero-inner">
+      <view class="avatar" wx:if="{{!info.cover}}">
+        <image wx:if="{{info.avatarImg}}" class="avatar-img" src="{{info.avatarImg}}" mode="aspectFill" />
+        <text wx:else>{{info.avatarEmoji}}</text>
+      </view>
+      <view class="shop-name">{{info.shopName}}</view>
+      <view class="slogan">{{info.slogan}}</view>
+      <view class="tags">
+        <text class="tag">{{dishCount}} 道菜</text>
+        <text class="tag">{{catCount}} 个分类</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{info.intro}}">
+    <view class="card-title">主理人的话</view>
+    <view class="body-text">{{info.intro}}</view>
+  </view>
+
+  <view class="card" wx:if="{{info.notice}}">
+    <view class="card-title">📌 提醒</view>
+    <view class="body-text">{{info.notice}}</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">怎么用</view>
+    <view class="step"><text class="step-num">1</text><text class="step-text">在菜单里挑想吃的，点右下角的「＋」</text></view>
+    <view class="step"><text class="step-num">2</text><text class="step-text">底部会显示已选份数和总价，点「去点单」</text></view>
+    <view class="step"><text class="step-num">3</text><text class="step-text">写上称呼和备注，生成清单</text></view>
+    <view class="step"><text class="step-num">4</text><text class="step-text">复制清单，发微信给主理人就好</text></view>
+  </view>
+
+  <view class="card contact" bindtap="copyContact">
+    <view class="contact-label">联系主理人</view>
+    <view class="contact-value">{{info.contact || '还没填'}}</view>
+    <view class="contact-tip">点一下复制</view>
+  </view>
+
+  <view class="primary-btn go" bindtap="goMenu">去看菜单</view>
+  <view class="foot">你收藏了 {{favCount}} 道菜 · 收藏和点单只存在这台手机上</view>
+</view>

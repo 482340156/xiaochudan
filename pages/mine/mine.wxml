@@ -1,0 +1,79 @@
+<view class="page">
+
+  <view class="profile">
+    <view class="avatar">
+      <image wx:if="{{info.avatarImg}}" class="avatar-img" src="{{info.avatarImg}}" mode="aspectFill" />
+      <text wx:else>{{info.avatarEmoji}}</text>
+    </view>
+    <view class="profile-main">
+      <view class="shop-name">{{info.shopName}}</view>
+      <view class="slogan">{{info.slogan}}</view>
+    </view>
+  </view>
+
+  <view class="stats">
+    <view class="stat">
+      <view class="stat-num">{{favCount}}</view>
+      <view class="stat-label">收藏</view>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat">
+      <view class="stat-num">{{cartCount}}</view>
+      <view class="stat-label">已选</view>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat">
+      <view class="stat-num">{{dishCount}}</view>
+      <view class="stat-label">道菜</view>
+    </view>
+  </view>
+
+  <view class="group">
+    <view class="cell" bindtap="goFavorites">
+      <text class="cell-icon">♥</text>
+      <text class="cell-title">我的收藏</text>
+      <text class="cell-value">{{favCount}}</text>
+      <text class="cell-arrow">›</text>
+    </view>
+
+    <view class="cell" bindtap="goAbout">
+      <text class="cell-icon">📖</text>
+      <text class="cell-title">关于这份菜单</text>
+      <text class="cell-arrow">›</text>
+    </view>
+
+    <button class="cell cell-btn" open-type="share" hover-class="none">
+      <text class="cell-icon">📤</text>
+      <text class="cell-title">分享给朋友</text>
+      <text class="cell-arrow">›</text>
+    </button>
+  </view>
+
+  <view class="group">
+    <view class="group-title">连到我的服务器（可选）</view>
+    <view class="server">
+      <input
+        class="server-input"
+        value="{{serverUrl}}"
+        placeholder="例如 http://192.168.1.5:8000"
+        placeholder-class="server-ph"
+        bindinput="onServerInput"
+      />
+      <view class="server-actions">
+        <view class="mini-btn" bindtap="saveServer">保存</view>
+        <view class="mini-btn ghost" bindtap="testServer">{{testing ? '连接中…' : '测试连接'}}</view>
+      </view>
+      <view class="server-hint">{{serverHint}}</view>
+    </view>
+  </view>
+
+  <view class="group">
+    <view class="cell" bindtap="clearAll">
+      <text class="cell-icon">🧹</text>
+      <text class="cell-title">清空本地数据</text>
+      <text class="cell-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="foot">菜单数据来自 Python 服务端的 menu.py · 你的收藏和点单只存在这台手机上</view>
+</view>

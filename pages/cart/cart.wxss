@@ -1,0 +1,271 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+/* ---------- 整页背景图（用菜单里那张 8843） ---------- */
+.page-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.page-veil {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(247, 248, 252, 0.88) 0%,
+    rgba(247, 248, 252, 0.76) 20%,
+    rgba(247, 248, 252, 0.76) 80%,
+    rgba(247, 248, 252, 0.92) 100%
+  );
+}
+
+.page-body {
+  position: relative;
+  z-index: 2;
+}
+
+.head {
+  padding: 36rpx 32rpx 20rpx;
+}
+
+.head-title {
+  font-size: 40rpx;
+  font-weight: 800;
+}
+
+.head-sub {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #A2A9BF;
+}
+
+.list {
+  padding: 0 32rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  margin-bottom: 18rpx;
+  background: #FFFFFF;
+  border-radius: 26rpx;
+  box-shadow: 0 8rpx 22rpx rgba(94, 110, 168, 0.06);
+}
+
+.row-thumb {
+  width: 110rpx;
+  height: 110rpx;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+}
+
+.row-emoji {
+  font-size: 52rpx;
+  line-height: 1;
+}
+
+.row-main {
+  flex: 1;
+  min-width: 0;
+  margin-left: 20rpx;
+}
+
+.row-name {
+  font-size: 29rpx;
+  font-weight: 700;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.row-sub {
+  margin-top: 8rpx;
+  font-size: 21rpx;
+  color: #98A0B8;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.step-btn {
+  width: 56rpx;
+  height: 56rpx;
+  line-height: 54rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #4B5169;
+  background: #FFFFFF;
+  border: 2rpx solid #E8EBF4;
+  border-radius: 50%;
+}
+
+.step-plus {
+  color: #FFFFFF;
+  background: linear-gradient(140deg, #8FAEFF, #6C8FF0);
+  border: none;
+}
+
+.step-qty {
+  min-width: 56rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.note-card {
+  margin: 10rpx 32rpx 0;
+  padding: 24rpx;
+  background: #FFFFFF;
+  border-radius: 26rpx;
+  box-shadow: 0 8rpx 22rpx rgba(94, 110, 168, 0.06);
+}
+
+.note-label {
+  font-size: 26rpx;
+  font-weight: 700;
+  margin-bottom: 14rpx;
+}
+
+.note-input {
+  width: 100%;
+  min-height: 110rpx;
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #383D52;
+}
+
+.note-ph {
+  color: #B9BFD0;
+}
+
+.sum-card {
+  margin: 18rpx 32rpx 0;
+  padding: 24rpx;
+  background: #EEF2FF;
+  border-radius: 26rpx;
+}
+
+.sum-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.sum-label {
+  font-size: 26rpx;
+  color: #6E7BA8;
+}
+
+.sum-total {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #6C8FF0;
+}
+
+.sum-hint {
+  margin-top: 10rpx;
+  font-size: 21rpx;
+  color: #9BA2B8;
+}
+
+.acts {
+  display: flex;
+  margin: 24rpx 32rpx 0;
+}
+
+.act {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 27rpx;
+}
+
+.act + .act {
+  margin-left: 20rpx;
+}
+
+.submit {
+  margin: 24rpx 32rpx 0;
+}
+
+.back-link {
+  margin-top: 26rpx;
+  text-align: center;
+  font-size: 25rpx;
+  color: #A2A9BF;
+}
+
+.empty-btn {
+  width: 320rpx;
+  margin: 40rpx auto 0;
+}
+
+/* ---------- 提交成功弹层 ---------- */
+.result {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+}
+
+.result-mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(40, 44, 66, 0.35);
+}
+
+.result-panel {
+  position: relative;
+  width: 100%;
+  padding: 36rpx 32rpx calc(36rpx + env(safe-area-inset-bottom));
+  background: #FFFFFF;
+  border-radius: 36rpx 36rpx 0 0;
+}
+
+.result-title {
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.result-no {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #6C8FF0;
+}
+
+.result-text {
+  width: 100%;
+  height: 300rpx;
+  margin: 22rpx 0 6rpx;
+  padding: 22rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #4B5169;
+  background: #F5F7FD;
+  border-radius: 20rpx;
+}

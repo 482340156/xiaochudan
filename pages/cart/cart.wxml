@@ -1,0 +1,79 @@
+<view class="page">
+
+  <image class="page-bg" wx:if="{{info.lower}}" src="{{info.lower}}" mode="aspectFill" />
+  <view class="page-veil" wx:if="{{info.lower}}"></view>
+
+  <view class="page-body">
+  <block wx:if="{{items.length > 0}}">
+    <view class="head">
+      <view class="head-title">点单清单</view>
+      <view class="head-sub">{{items.length}} 道菜 · 共 {{count}} 份</view>
+    </view>
+
+    <view class="list">
+      <view class="row" wx:for="{{items}}" wx:key="id">
+        <view class="row-thumb" style="background: linear-gradient(140deg, {{item.color2}}, {{item.color}});">
+          <text class="row-emoji">{{item.emoji}}</text>
+        </view>
+
+        <view class="row-main">
+          <view class="row-name">{{item.name}}</view>
+          <view class="row-sub">¥{{item.price}}/{{item.unit}} · 小计 ¥{{item.subtotal}}</view>
+        </view>
+
+        <view class="stepper">
+          <view class="step-btn" data-id="{{item.id}}" bindtap="minus">−</view>
+          <text class="step-qty">{{item.qty}}</text>
+          <view class="step-btn step-plus" data-id="{{item.id}}" bindtap="plus">＋</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="note-card">
+      <view class="note-label">备注</view>
+      <textarea
+        class="note-input"
+        value="{{note}}"
+        placeholder="少辣 / 几点要 / 其他要求"
+        placeholder-class="note-ph"
+        maxlength="120"
+        bindinput="onNote"
+      />
+    </view>
+
+    <view class="sum-card">
+      <view class="sum-row">
+        <text class="sum-label">合计</text>
+        <text class="sum-total">¥{{total}}</text>
+      </view>
+      <view class="sum-hint">{{connected ? '点单会直接发到主理人的后台' : '点单会生成一段文字，复制后发微信给主理人'}}</view>
+    </view>
+
+    <view class="acts">
+      <view class="ghost-btn act" bindtap="clearAll">清空</view>
+      <view class="ghost-btn act" bindtap="copyList">复制清单</view>
+    </view>
+
+    <view class="primary-btn submit" bindtap="submit">{{connected ? '提交点单' : '生成清单'}}</view>
+    <view class="back-link" bindtap="goMenu">← 回去接着选</view>
+  </block>
+
+  <view class="empty" wx:else>
+    <text class="empty-emoji">🧺</text>
+    <view class="empty-text">还没选菜</view>
+    <view class="empty-tip">去菜单看看今天想吃什么</view>
+    <view class="primary-btn empty-btn" bindtap="goMenu">去点菜</view>
+  </view>
+  </view>
+</view>
+
+<view class="result" wx:if="{{showResult}}">
+  <view class="result-mask" bindtap="closeResult"></view>
+  <view class="result-panel">
+    <view class="result-title">点单成功</view>
+    <view class="result-no">订单号 #{{orderNo}}</view>
+    <textarea class="result-text" value="{{orderText}}" disabled></textarea>
+    <view class="primary-btn submit" bindtap="copyResult">复制清单</view>
+    <view class="back-link" bindtap="closeResult">关闭</view>
+  </view>
+</view>

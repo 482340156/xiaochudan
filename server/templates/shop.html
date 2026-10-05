@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}订单后台 · {{ shop.name }}{% endblock %}
+{% block body_class %}console-page{% endblock %}
+
+{% block content %}
+<div class="console-wrap">
+  {% if synced == 'added' %}
+  <div class="flash ok">新菜已经加好了。回到菜单页刷新一下就能看到。</div>
+  {% elif synced == 'deleted' %}
+  <div class="flash ok">已经删掉了。</div>
+  {% elif synced == 'sync-ok' %}
+  <div class="flash ok">已同步给微信小程序，data/menu.js 更新完成。</div>
+  {% elif synced == 'sync-fail' %}
+  <div class="flash bad">同步失败。看看运行服务的那个黑窗口里打印了什么。</div>
+  {% endif %}
+
+  <header class="console-head">
+    <div>
+      <h1>{{ shop.name }} · 订单后台</h1>
+      <p class="console-sub">{{ shop.slogan }}</p>
+    </div>
+    <a class="console-link" href="{{ url_for('menu_page') }}">打开菜单页 →</a>
+  </header>
+
+  <section class="stat-grid">
+    <div class="stat-box">
+      <strong>{{ stats.today_orders }}</strong>
+      <span>今日订单</span>
+    </div>
+    <div class="stat-box">
+      <strong>¥{{ stats.today_amount|money }}</strong>
+      <span>今日金额</span>
+    </div>
+    <div class="stat-box {{ 'stat-warn' if stats.pending }}">
+      <strong>{{ stats.pending }}</strong>
+      <span>待处理</span>
+    </div>
+    <div class="stat-box">
+      <strong>{{ stats.all_orders }}</strong>
+      <span>累计订单</span>
+    </div>
+  </section>
+
+  <section class="share-box">
+    <div class="share-text">
+      <h2>把菜单发给朋友</h2>
+      <p>让朋友连同一个 Wi-Fi，扫码或打开这个网址就能点单：</p>
+      <p class="share-url">{{ menu_url }}</p>
+      <p class="share-tip">手机和电脑要在同一个网络里。想让朋友在外网也能用，见 README 里的「让朋友用」一节。</p>
+    </div>
+    <img class="qr" src="{{ url_for('qr_png') }}" alt="菜单二维码">
+  </section>
+
+  <section class="admin-bar">
+    <a class="btn-small" href="{{ url_for('shop_dish_new', token=token) }}">＋ 加一道菜</a>
+    <form method="post" action="{{ url_for('shop_sync') }}">
+      <input type="hidden" name="token" value="{{ token }}">
+      <button class="btn-small ghost" type="submit">同步给微信小程序</button>
+    </form>
+    <span class="admin-count">菜单现在一共 {{ dish_count }} 道菜</span>
+  </section>
+
+  {% if custom_dishes %}
+  <section class="my-dishes">
+    <h2 class="orders-title">我自己加的菜（{{ custom_dishes|length }} 道）</h2>
+    {% for d in custom_dishes %}
+    <article class="my-dish">
+      <div class="my-dish-thumb"
+           style="background:linear-gradient(140deg,{{ d.color2 }},{{ d.color }})">
+        {% if d.image %}<img src="{{ d.image }}" alt="{{ d.name }}">
+        {% else %}<span>{{ d.emoji }}</span>{% endif %}
+      </div>
+      <div class="my-dish-main">
+        <strong>{{ d.name }}</strong>
+        <span class="my-dish-sub">{{ d.desc or '（还没写介绍）' }}</span>
+      </div>
+      <div class="my-dish-price">¥{{ d.price|money }}</div>
+      <form method="post" action="{{ url_for('shop_dish_delete') }}">
+        <input type="hidden" name="token" value="{{ token }}">
+        <input type="hidden" name="dish_id" value="{{ d.id }}">
+        <button class="btn-small ghost" type="submit">删除</button>
+      </form>
+    </article>
+    {% endfor %}
+    <p class="my-dishes-tip">
+      这里只能删「我自己加的菜」。menu.py 里写死的那 12 道要改代码才能动。
+    </p>
+  </section>
+  {% endif %}
+
+  <h2 class="orders-title">订单（共 {{ orders|length }} 笔）</h2>
+
+  {% if not orders %}
+  <div class="console-card empty-orders">
+    <div class="empty-emoji">🧾</div>
+    <p>还没有订单</p>
+    <small>把上面的二维码发给朋友，他们点完这里就会出现。</small>
+  </div>
+  {% endif %}
+
+  {% for o in orders %}
+  <article class="order {{ 'order-pending' if o.status == 'new' }}">
+    <div class="order-head">
+      <div class="order-id">
+        <strong>#{{ o.order_no }}</strong>
+        <span>{{ o.created_at }}</span>
+      </div>
+      <span class="status status-{{ o.status }}">{{ o.status_label }}</span>
+    </div>
+
+    <div class="order-customer">
+      <span>👤 {{ o.customer or '没留名字' }}</span>
+      {% if o.contact %}<span>📞 {{ o.contact }}</span>{% endif %}
+      <span>🍽️ {{ o.item_count }} 份</span>
+    </div>
+
+    <ul class="order-items">
+      {% for it in o['items'] %}
+      <li>
+        <span class="oi-name">{{ it.name }}</span>
+        <span class="oi-qty">× {{ it.qty }}</span>
+        <span class="oi-sub">¥{{ it.subtotal|money }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% if o.note %}<p class="order-note">备注：{{ o.note }}</p>{% endif %}
+
+    <div class="order-foot">
+      <div class="order-total">合计 <strong>¥{{ o.total|money }}</strong></div>
+      <div class="order-actions">
+        {% if o.status == 'new' %}
+        <form method="post" action="{{ url_for('shop_status') }}">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="order_no" value="{{ o.order_no }}">
+          <input type="hidden" name="status" value="done">
+          <button class="btn-small" type="submit">标记完成</button>
+        </form>
+        <form method="post" action="{{ url_for('shop_status') }}">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="order_no" value="{{ o.order_no }}">
+          <input type="hidden" name="status" value="cancel">
+          <button class="btn-small ghost" type="submit">取消</button>
+        </form>
+        {% else %}
+        <form method="post" action="{{ url_for('shop_status') }}">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="order_no" value="{{ o.order_no }}">
+          <input type="hidden" name="status" value="new">
+          <button class="btn-small ghost" type="submit">恢复待处理</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

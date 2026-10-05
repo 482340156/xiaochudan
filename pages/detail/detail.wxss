@@ -1,0 +1,315 @@
+.page {
+  min-height: 100vh;
+}
+
+/* ---------- 大图 / 图标 ---------- */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 520rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0 0 48rpx 48rpx;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero-emoji {
+  font-size: 220rpx;
+  line-height: 1;
+}
+
+.hero-badges {
+  position: absolute;
+  left: 32rpx;
+  bottom: 64rpx;
+  display: flex;
+}
+
+.badge {
+  padding: 6rpx 20rpx;
+  margin-right: 12rpx;
+  font-size: 22rpx;
+  color: #FFFFFF;
+  background: rgba(46, 51, 80, 0.3);
+  border-radius: 100rpx;
+}
+
+.badge-solid {
+  background: linear-gradient(140deg, #8FAEFF, #6C8FF0);
+}
+
+/* ---------- 内容 ---------- */
+.body {
+  position: relative;
+  margin-top: -48rpx;
+  padding: 0 32rpx;
+}
+
+.card {
+  padding: 30rpx 28rpx;
+  margin-bottom: 22rpx;
+  background: #FFFFFF;
+  border-radius: 28rpx;
+  box-shadow: 0 8rpx 24rpx rgba(94, 110, 168, 0.07);
+}
+
+.head-card {
+  padding-top: 34rpx;
+}
+
+.head-top {
+  display: flex;
+  align-items: flex-start;
+}
+
+.dish-name {
+  flex: 1;
+  font-size: 42rpx;
+  font-weight: 800;
+  color: #383D52;
+  line-height: 1.3;
+}
+
+.fav-btn {
+  width: 68rpx;
+  height: 68rpx;
+  line-height: 66rpx;
+  text-align: center;
+  font-size: 40rpx;
+  color: #B9BFD0;
+}
+
+.fav-btn:active {
+  transform: scale(0.88);
+}
+
+.fav-on {
+  color: #6C8FF0;
+}
+
+.tag-row {
+  margin-top: 18rpx;
+}
+
+.price-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 24rpx;
+}
+
+.price.big {
+  font-size: 46rpx;
+}
+
+.price.big .price-sym {
+  font-size: 26rpx;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.meta-item {
+  font-size: 21rpx;
+  color: #98A0B8;
+  line-height: 1.8;
+}
+
+.desc {
+  margin-top: 26rpx;
+  padding-top: 26rpx;
+  border-top: 2rpx solid #EFF1F8;
+  font-size: 26rpx;
+  line-height: 1.8;
+  color: #6B7189;
+}
+
+.card-title {
+  margin-bottom: 22rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #383D52;
+}
+
+.ct-icon {
+  margin-right: 10rpx;
+}
+
+/* ---------- 食材 ---------- */
+.ing-item {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 0;
+}
+
+.ing-dot {
+  width: 10rpx;
+  height: 10rpx;
+  flex: none;
+  margin-right: 18rpx;
+  background: #A9C0FF;
+  border-radius: 50%;
+}
+
+.ing-text {
+  font-size: 26rpx;
+  color: #4B5169;
+}
+
+/* ---------- 做法 ---------- */
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 26rpx;
+}
+
+.step-item:last-child {
+  margin-bottom: 0;
+}
+
+.step-num {
+  width: 46rpx;
+  height: 46rpx;
+  flex: none;
+  margin-right: 18rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  line-height: 46rpx;
+  text-align: center;
+  color: #FFFFFF;
+  background: linear-gradient(140deg, #9BB6FF, #6C8FF0);
+  border-radius: 50%;
+}
+
+.step-text {
+  flex: 1;
+  font-size: 26rpx;
+  line-height: 1.8;
+  color: #4B5169;
+}
+
+/* ---------- 贴士 ---------- */
+.tips {
+  display: flex;
+  padding: 26rpx;
+  margin-bottom: 22rpx;
+  background: #FFF4F7;
+  border-radius: 24rpx;
+}
+
+.tips-icon {
+  margin-right: 14rpx;
+  font-size: 26rpx;
+  line-height: 1.7;
+}
+
+.tips-text {
+  flex: 1;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #C2607E;
+}
+
+.copy-btn {
+  margin-bottom: 20rpx;
+}
+
+/* ---------- 悬浮操作栏 ---------- */
+.bottom-hold {
+  height: 200rpx;
+}
+
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  padding: 20rpx 32rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 -6rpx 26rpx rgba(94, 110, 168, 0.08);
+}
+
+.bar-qty {
+  display: flex;
+  align-items: center;
+}
+
+.step-btn {
+  width: 64rpx;
+  height: 64rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 34rpx;
+  color: #4B5169;
+  background: #FFFFFF;
+  border: 2rpx solid #E8EBF4;
+  border-radius: 50%;
+}
+
+.step-btn:active {
+  opacity: 0.7;
+}
+
+.step-plus {
+  color: #FFFFFF;
+  background: linear-gradient(140deg, #8FAEFF, #6C8FF0);
+  border: none;
+}
+
+.step-off {
+  color: #CFD4E1;
+}
+
+.bar-qty-num {
+  min-width: 62rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  text-align: center;
+}
+
+.bar-main {
+  flex: 1;
+  margin-left: 22rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+  text-align: center;
+  font-size: 29rpx;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(140deg, #8FAEFF, #6C8FF0);
+  border-radius: 100rpx;
+  box-shadow: 0 10rpx 22rpx rgba(108, 143, 240, 0.22);
+}
+
+.bar-main:active {
+  opacity: 0.9;
+}
+
+.bar-main-on {
+  background: linear-gradient(120deg, #3E4460, #2E3350);
+  box-shadow: 0 10rpx 22rpx rgba(46, 51, 80, 0.20);
+}
+
+/* ---------- 找不到 ---------- */
+.notfound {
+  padding: 220rpx 60rpx;
+  text-align: center;
+}
+
+.back-btn {
+  margin-top: 40rpx;
+}
