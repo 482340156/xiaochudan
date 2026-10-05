@@ -1,0 +1,19 @@
+# Python 虚拟环境与缓存
+.venv/
+__pycache__/
+*.py[cod]
+
+# 你自己的数据：订单、自己加的菜
+server/data/
+
+# 私有配置：联系方式、后台口令（把 config_local.example.py 复制一份改名即可）
+server/config_local.py
+
+# 微信开发者工具的本地设置
+project.private.config.json
+
+# 编辑器与系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
